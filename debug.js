@@ -19,9 +19,9 @@ vorpal.command('startGame').action(() =>
 );
 
 vorpal.command('nextWord').action(() =>
-  player.nextWord().then((word) => {
-    shg.log.info('nextWord', word);
-    shg.log.info('Patchouli suggests', shg.patchouli.initialGuess(word));
+  player.nextWord().then((data) => {
+    shg.log.info('nextWord', data);
+    shg.log.info('Patchouli suggests', shg.patchouli.initialGuess(data.word));
   })
 );
 

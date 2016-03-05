@@ -34,7 +34,7 @@ describe('The player', () => {
       expect(response.data).to.have.all.keys(['numberOfWordsToGuess', 'numberOfGuessAllowedForEachWord']);
       return player.nextWord();
     }).then((response) => {
-      expect(response).to.be.a('string');
+      expect(response).to.have.all.keys(['word', 'totalWordCount', 'wrongGuessCountOfCurrentWord']);
       return player.guessWord('E');
     }).then((response) => {
       expect(response).to.have.all.keys(['word', 'totalWordCount', 'wrongGuessCountOfCurrentWord']);
