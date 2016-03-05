@@ -34,6 +34,7 @@ vorpal.command('guessWord <guess>').validate((args) =>
     if (isSolved(word)) {
       shg.log.info('Correct!');
     } else {
+      shg.patchouli.lastGuess = args.guess.toLowerCase();
       const suggestion = shg.patchouli.guessWith(word);
       if (suggestion) {
         shg.log.info('Patchouli suggests', suggestion);
