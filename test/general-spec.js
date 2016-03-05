@@ -29,8 +29,8 @@ describe('The player', () => {
   });
 
   it('is capable of basic interactions', () => {
-    const player = new shg.player('some-server-url');
-    return player.startGame('some-player-id').then((response) => {
+    const player = new shg.player('some-server-url', 'some-player-id');
+    return player.startGame().then((response) => {
       expect(response.data).to.have.all.keys(['numberOfWordsToGuess', 'numberOfGuessAllowedForEachWord']);
       return player.nextWord();
     }).then((response) => {

@@ -8,12 +8,12 @@ if (process.argv.length !== 4) {
 const PLAYER_URL = process.argv[2];
 const PLAYER_ID = process.argv[3];
 
-const player = new shg.player(PLAYER_URL);
+const player = new shg.player(PLAYER_URL, PLAYER_ID);
 
 const vorpal = require('vorpal')();
 
 vorpal.command('startGame').action(() =>
-  player.startGame(PLAYER_ID).then((data) =>
+  player.startGame().then((data) =>
     shg.log.info('startGame', data)
   )
 );
