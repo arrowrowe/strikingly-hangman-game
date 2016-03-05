@@ -47,15 +47,17 @@ describe('The player', () => {
     });
   });
 
-  const THandleError = (error) => {
+  const THandleError = (error, pattern) => {
+    pattern = pattern || /exceeds limit/;
     fakeServer.error = error;
     const player = new shg.player('some-server-url');
     return player.startGame('some-player-id').catch((reason) => {
       fakeServer.error = null;
-      expect(reason.message).to.match(/exceeds limit/);
+      expect(reason.message || reason).to.match(pattern);
     });
   };
 
+  it('throws known errors immediately', () => THandleError({error: {message: 'Missing session id'}}, /Missing session id/));
   it('retries until limit exceeded', () => THandleError({error: {message: 'Some error messaage.'}}));
   it('handles unrecogonized errors as well', () => THandleError('Some strange error'));
 
