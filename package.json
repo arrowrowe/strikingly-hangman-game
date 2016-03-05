@@ -5,6 +5,7 @@
   "description": "Play Strikingly's Hangman Game in Node, following https://github.com/joycehan/strikingly-interview-test-instructions/tree/new.",
   "main": "index.js",
   "scripts": {
+    "debug": "node debug.js",
     "lint": "eslint .",
     "test:only": "mocha 'test/**/*-spec.js'",
     "test:easy": "istanbul cover _mocha 'test/**/*-spec.js' -- -R spec",
@@ -31,9 +32,12 @@
     "eslint": "2.3.0",
     "istanbul": "0.4.2",
     "mocha": "2.4.5",
-    "sinon": "1.17.3"
+    "sinon": "1.17.3",
+    "vorpal": "1.10.8"
   },
   "dependencies": {
+    "log4js": "0.6.32",
+    "request-promise": "2.0.1",
     "word-list": "1.0.1"
   }
 }

@@ -1,3 +1,5 @@
 module.exports = {
-  version: require('./package').version
+  version: require('./package').version,
+  player: require('./lib/player'),
+  log: require('./lib/log')
 };
