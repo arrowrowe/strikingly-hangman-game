@@ -1,4 +1,5 @@
 const shg = require('./index');
+const isSolved = require('./lib/is-solved');
 
 if (process.argv.length !== 4) {
   shg.log.error('Usage: npm run debug https://url/ player@email');
@@ -18,17 +19,29 @@ vorpal.command('startGame').action(() =>
 );
 
 vorpal.command('nextWord').action(() =>
-  player.nextWord().then((data) =>
-    shg.log.info('nextWord', data)
-  )
+  player.nextWord().then((word) => {
+    shg.log.info('nextWord', word);
+    shg.log.info('Patchouli suggests', shg.patchouli.initialGuess(word));
+  })
 );
 
 vorpal.command('guessWord <guess>').validate((args) =>
   /^[A-Z]$/.test(args.guess) || 'Only one capital letter allowed!'
 ).action((args) =>
-  player.guessWord(args.guess).then((data) =>
-    shg.log.info('guessWord', data)
-  )
+  player.guessWord(args.guess).then((data) => {
+    shg.log.info('guessWord', data);
+    const word = data.word;
+    if (isSolved(word)) {
+      shg.log.info('Correct!');
+    } else {
+      const suggestion = shg.patchouli.guessWith(word);
+      if (suggestion) {
+        shg.log.info('Patchouli suggests', suggestion);
+      } else {
+        shg.log.info('Patchouli gives up.');
+      }
+    }
+  })
 );
 
 vorpal.command('getResult').action(() =>
