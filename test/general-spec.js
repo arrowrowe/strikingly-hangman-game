@@ -50,8 +50,8 @@ describe('The player', () => {
   const THandleError = (error, pattern) => {
     pattern = pattern || /exceeds limit/;
     fakeServer.error = error;
-    const player = new shg.player('some-server-url');
-    return player.startGame('some-player-id').catch((reason) => {
+    const player = new shg.player('some-server-url', 'some-player-id');
+    return player.startGame().catch((reason) => {
       fakeServer.error = null;
       expect(reason.message || reason).to.match(pattern);
     });
@@ -60,5 +60,14 @@ describe('The player', () => {
   it('throws known errors immediately', () => THandleError({error: {message: 'Missing session id'}}, /Missing session id/));
   it('retries until limit exceeded', () => THandleError({error: {message: 'Some error messaage.'}}));
   it('handles unrecogonized errors as well', () => THandleError('Some strange error'));
+
+  it('can run automatically', () => {
+    shg.patchouli.words = [
+      'a', 'b', 'c', 'd', 'e', 'f', 'g',
+      'aa', 'ab', 'ac', 'ad'
+    ];
+    const player = new shg.player('some-server-url', 'some-player-id');
+    return player.run();
+  });
 
 });

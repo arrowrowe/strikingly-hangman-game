@@ -10,6 +10,14 @@ const PLAYER_ID = process.argv[3];
 
 const player = new shg.player(PLAYER_URL, PLAYER_ID);
 
+// HACK: Prevent Vorpal's error output for promises
+const isErrorKnown = require('./lib/interact').isErrorKnown;
+const Command = require('./node_modules/vorpal/dist/command');
+const commandAction = Command.prototype.action;
+Command.prototype.action = function (fn) {
+  commandAction.call(this, (args) => fn(args).catch((reason) => isErrorKnown(reason) || shg.log.error(reason)));
+};
+
 const vorpal = require('vorpal')();
 
 vorpal.command('startGame').action(() =>
@@ -54,6 +62,12 @@ vorpal.command('getResult').action(() =>
 vorpal.command('submitResult').action(() =>
   player.submitResult().then((data) =>
     shg.log.info('submitResult', data)
+  )
+);
+
+vorpal.command('run').action(() =>
+  player.run().then((data) =>
+    shg.log.info('run', data)
   )
 );
 
