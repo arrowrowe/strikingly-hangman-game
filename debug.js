@@ -13,20 +13,19 @@ const player = new shg.player(PLAYER_URL, PLAYER_ID);
 // HACK: Prevent Vorpal's error output for promises
 const isErrorKnown = require('./lib/interact').isErrorKnown;
 const Command = require('./node_modules/vorpal/dist/command');
-const commandAction = Command.prototype.action;
-Command.prototype.action = function (fn) {
-  commandAction.call(this, (args) => fn(args).catch((reason) => isErrorKnown(reason) || shg.log.error(reason)));
+Command.prototype.actionWrap = function (fn) {
+  this.action((args) => fn(args).catch((reason) => isErrorKnown(reason) || shg.log.error(reason)));
 };
 
 const vorpal = require('vorpal')();
 
-vorpal.command('startGame').action(() =>
+vorpal.command('startGame').actionWrap(() =>
   player.startGame().then((data) =>
     shg.log.info('startGame', data)
   )
 );
 
-vorpal.command('nextWord').action(() =>
+vorpal.command('nextWord').actionWrap(() =>
   player.nextWord().then((data) => {
     shg.log.info('nextWord', data);
     shg.log.info('Patchouli suggests', shg.patchouli.initialGuess(data.word));
@@ -35,7 +34,7 @@ vorpal.command('nextWord').action(() =>
 
 vorpal.command('guessWord <guess>').validate((args) =>
   /^[A-Z]$/.test(args.guess) || 'Only one capital letter allowed!'
-).action((args) =>
+).actionWrap((args) =>
   player.guessWord(args.guess).then((data) => {
     shg.log.info('guessWord', data);
     const word = data.word;
@@ -53,19 +52,19 @@ vorpal.command('guessWord <guess>').validate((args) =>
   })
 );
 
-vorpal.command('getResult').action(() =>
+vorpal.command('getResult').actionWrap(() =>
   player.getResult().then((data) =>
     shg.log.info('getResult', data)
   )
 );
 
-vorpal.command('submitResult').action(() =>
+vorpal.command('submitResult').actionWrap(() =>
   player.submitResult().then((data) =>
     shg.log.info('submitResult', data)
   )
 );
 
-vorpal.command('run').action(() =>
+vorpal.command('run').actionWrap(() =>
   player.run().then((data) =>
     shg.log.info('run', data)
   )
