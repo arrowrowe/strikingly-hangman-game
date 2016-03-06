@@ -45,7 +45,7 @@ describe('The player', () => {
     }).then(() => {
       throw 'SHOULD THROW';
     }).catch((reason) => {
-      expect(reason).to.equal('Score too low to submit');
+      expect(reason).to.equal(shg.constants.ERROR_SCORE_TOO_LOW);
     });
   });
 
