@@ -42,8 +42,10 @@ describe('The player', () => {
     }).then((response) => {
       expect(response).to.have.all.keys(['totalWordCount', 'correctWordCount', 'totalWrongGuessCount', 'score']);
       return player.submitResult();
-    }).then((response) => {
-      expect(response).to.have.all.keys(['playerId', 'sessionId', 'totalWordCount', 'correctWordCount', 'totalWrongGuessCount', 'score', 'datetime']);
+    }).then(() => {
+      throw 'SHOULD THROW';
+    }).catch((reason) => {
+      expect(reason).to.equal('Score too low to submit');
     });
   });
 
@@ -67,7 +69,10 @@ describe('The player', () => {
       'aa', 'ab', 'ac', 'ad'
     ];
     const player = new shg.player('some-server-url', 'some-player-id');
-    return player.run();
+    require('fs-extra').removeSync(player.playerRecordPath);
+    return player.run().then((response) => {
+      expect(response).to.have.all.keys(['playerId', 'sessionId', 'totalWordCount', 'correctWordCount', 'totalWrongGuessCount', 'score', 'datetime']);
+    });
   });
 
 });

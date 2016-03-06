@@ -50,12 +50,20 @@ function addMatch(guess, word, wordReal) {
   return wordNew;
 }
 
+const isSolved = require('../lib/is-solved');
+
 session.prototype.guessWord = function (body) {
   const wordNew = addMatch(body.guess, this.word, this.wordReal);
   if (wordNew === this.word) {
     this.wrongGuessCountOfCurrentWord++;
+    this.totalWrongGuessCount++;
+    this.score--;
   } else {
     this.word = wordNew;
+    if (isSolved(this.word)) {
+      this.correctWordCount++;
+      this.score += 30;
+    }
   }
   return this.response({
     word: this.word,
