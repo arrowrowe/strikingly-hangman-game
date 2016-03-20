@@ -2,8 +2,6 @@
 
 > Strikingly Task2 - JavaScript Programming Test
 
-Contact me ([arrowrowe@gmail.com](mailto:arrowrowe@gmail.com)) to get acess to this GitHub private repository: [arrowrowe/strikingly-hangman-game](https://github.com/arrowrowe/strikingly-hangman-game).
-
 [npm:word-list]: https://www.npmjs.com/package/word-list
 [npm:subtlex-word-frequencies]: https://www.npmjs.com/package/subtlex-word-frequencies
 [npm:commander]: https://www.npmjs.com/package/commander
